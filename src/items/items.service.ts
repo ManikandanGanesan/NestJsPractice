@@ -36,6 +36,26 @@ export class ItemsService {
         return item;
     }
 
+    updateItem(updateItem: CreateItemDto): Item 
+    {
+        for(var i = 0; i < this.items.length; i++)
+        {
+            let item = this.items[i];
+            if(item.id == updateItem.id)
+            {
+                console.log("Entered inside the condition...");
+                item.name = updateItem.name;
+                item.date = updateItem.date;
+                item.qty = updateItem.qty;
+                item.status = updateItem.status;
+                this.items[i] = item;
+                break;
+            }
+        }
+        console.log("current Item: ", this.items[i]);
+        return this.items[i];
+    }
+
     findAll(): Item[] {
         return this.items;
     }

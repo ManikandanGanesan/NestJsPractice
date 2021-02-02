@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { ItemsService } from './items.service';
-import { Item } from './interfaces/item.interface';
+import { Item, ItemStatus } from './interfaces/item.interface';
+import { ItemStatusValidationPipe } from './pipes/item-status-validations.pipe';
 
 @Controller('items')
 export class ItemsController {
     constructor(private readonly itemsService: ItemsService){}
     @Get()
     findAll(): Item[] {
-        
         return this.itemsService.findAll();
     }
 
@@ -28,8 +28,8 @@ export class ItemsController {
     }
 
     @Put(':id')
-    updateItem(@Body() updateItem: CreateItemDto, @Param() param): string {
-        return `id: ${param.id} Name: ${updateItem.name} Date: ${updateItem.date} Qty: ${updateItem.qty}`;
+    updateItem(@Body() updateItem: CreateItemDto, @Param() param, @Body('status', ItemStatusValidationPipe) status: ItemStatus): Item {
+        return this.itemsService.updateItem(updateItem);
     }                                                      
 
     @Delete(':id')
